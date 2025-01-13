@@ -30,8 +30,13 @@ const Register = () => {
               <th>行操作</th>
             </tr>
           </thead>
-          {state.map((x) => (
-            <RegisterRow key={x.no} data={x} dispatch={dispatch} />
+          {state.map((x, index) => (
+            <RegisterRow
+              key={x.no}
+              data={x}
+              dispatch={dispatch}
+              rowno={index + 1}
+            />
           ))}
         </S.Table>
       </div>

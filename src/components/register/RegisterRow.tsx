@@ -5,6 +5,7 @@ import { TAction } from "../../reducer/registerReducer";
 type RegisterRowProps = {
   data: IProductInfo;
   dispatch: React.Dispatch<TAction>;
+  rowno: number;
 };
 
 const NameItem = {
@@ -15,7 +16,7 @@ const NameItem = {
 } as const;
 const Datatype = { number: "number" } as const;
 
-const RegisterRow = ({ data, dispatch }: RegisterRowProps) => {
+const RegisterRow = ({ data, dispatch, rowno }: RegisterRowProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input: string | number = e.target.value;
     if (e.target.dataset.datatype == Datatype.number) {
@@ -28,7 +29,7 @@ const RegisterRow = ({ data, dispatch }: RegisterRowProps) => {
   return (
     <tbody>
       <tr>
-        <td>{data.no}</td>
+        <td>{rowno}</td>
         <td>
           <input
             type="text"
