@@ -1,0 +1,14 @@
+[
+  { "month": "202401", "budget": 300000 },
+  { "month": "202402", "budget": 60000 },
+  { "month": "202403", "budget": 70000 },
+  { "month": "202404", "budget": 80000 },
+  { "month": "202405", "budget": 80000 },
+  { "month": "202406", "budget": 70000 },
+  { "month": "202407", "budget": 50000 },
+  { "month": "202408", "budget": 90000 },
+  { "month": "202409", "budget": 50000 },
+  { "month": "202410", "budget": 70000 },
+  { "month": "202411", "budget": 80000 },
+  { "month": "202412", "budget": 90000 }
+]
