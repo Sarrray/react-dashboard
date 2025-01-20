@@ -70,7 +70,8 @@ const Overview = () => {
 };
 
 const Overview2 = () => {
-  const { dispData } = useSales(salesdata, budge, dispBussinessSpan);
+  const { kijunbi } = useKijunbiContext();
+  const { dispData } = useSales(salesdata, budge, dispBussinessSpan, kijunbi);
 
   return (
     <>

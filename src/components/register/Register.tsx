@@ -7,8 +7,9 @@ import * as S from "./Style";
 import GraphPieChart2 from "../../graph/GraphPieChart2";
 
 const InitTestData: IProductInfo[] = [
-  { no: 1, date: "2025/1/10", product: "いちご", price: 100 },
-  { no: 2, date: "2025/1/10", product: "りんご", price: 200 },
+  { no: 1, date: "2025/1/10", product: "いちご", price: 200 },
+  { no: 2, date: "2025/1/10", product: "りんご", price: 100 },
+  { no: 3, date: "2025/1/10", product: "もも", price: 50 },
 ];
 
 const Register = () => {

@@ -11,7 +11,7 @@ type CustomTooltipProps = {
   coordinate: { x: number; y: number };
   label: string;
   displayname?: Record<string, Record<string, string>>;
-  labelformat?: "yyyy年mm月";
+  labelformat?: "yyyy年MM月" | "yyyy年MM月dd日";
 };
 
 const CustomTooltip = (props: any): JSX.Element => {
@@ -30,10 +30,16 @@ const CustomTooltip = (props: any): JSX.Element => {
 
   let dataTitle = label;
   switch (labelformat) {
-    case "yyyy年mm月":
+    case "yyyy年MM月":
       dataTitle = `${label.substring(0, 4)}年${Number(
         label.substring(4, 6)
       )}月`;
+      break;
+    case "yyyy年MM月dd日":
+      dataTitle = `${label.substring(0, 4)}年${Number(
+        label.substring(4, 6)
+      )}月${Number(label.substring(6, 8))}日`;
+      break;
   }
 
   return (

@@ -6,6 +6,8 @@ import Overview from "../overview/Overview";
 import History from "../history/History";
 import Register from "../register/Register";
 import { MdHistoryEdu } from "react-icons/md";
+import Report from "../report/Report";
+import { HiOutlineDocumentReport } from "react-icons/hi";
 
 type NavType = {
   key: string;
@@ -28,12 +30,20 @@ export const NavLists: NavType[] = [
     defaultpage: true,
   },
   {
+    key: "report",
+    title: "レポート作成",
+    url: "/report",
+    element: <Report />,
+    icon: <HiOutlineDocumentReport {...S.NavIconAttr} />,
+    sort: 2,
+  },
+  {
     key: "history",
     title: "売上履歴",
     url: "/history",
     element: <History />,
     icon: <MdHistoryEdu {...S.NavIconAttr} />,
-    sort: 2,
+    sort: 3,
   },
   {
     key: "register",
@@ -41,6 +51,6 @@ export const NavLists: NavType[] = [
     url: "/register",
     element: <Register />,
     icon: <BiPurchaseTag {...S.NavIconAttr} />,
-    sort: 3,
+    sort: 4,
   },
 ];

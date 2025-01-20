@@ -3,7 +3,7 @@ import { IProductInfo } from "../interfaces/interface";
 export type TAction =
   | { type: "UpdateRow"; data: IProductInfo }
   | { type: "AddRow" }
-  | { type: "DeleteRow"; No: Number };
+  | { type: "DeleteRow"; No: number };
 
 export const reducer = (
   state: IProductInfo[],

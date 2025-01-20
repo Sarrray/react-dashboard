@@ -7,10 +7,17 @@ type GraphPieChart2Props = {
 
 // const margin = { top: 30, right: 30, bottom: 30, left: 30 };
 const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-const COLORS = ["#ff5050", "#00468b", "#0071bc", "#ff8f86", "#00215d"];
+// const COLORS = ["#ff5050", "#00468b", "#0071bc", "#ff8f86", "#00215d"];
+const COLORS = [
+  "#30005d",
+  "#a300b4",
+  "#e03ca6",
+  "#ff6894",
+  "#ff9195",
+  "#ffc1bb",
+];
 
 const GraphPieChart2 = ({ data }: { data: GraphPieChart2Props }) => {
-  console.log(Object.values(data));
   return (
     <>
       <ResponsiveContainer>

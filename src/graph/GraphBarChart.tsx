@@ -79,7 +79,7 @@ const GraphBarChart = ({ data }: GraphBarChartProps) => {
               content={
                 <CustomTooltip
                   displayname={DisplayName}
-                  labelformat="yyyy年mm月"
+                  labelformat="yyyy年MM月"
                 />
               }
             />

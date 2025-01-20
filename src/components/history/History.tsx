@@ -12,8 +12,6 @@ const History = () => {
     setFilters(newFilter);
   };
 
-  // console.log(filters.date);
-
   return (
     <>
       <S.SearchTable>

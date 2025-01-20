@@ -76,7 +76,6 @@ const divUriageProductCardRow = styled(divCard)`
 `;
 
 const buttonOutputPDF = styled.button`
-  // border: 1px solid #fff;
   color: #fff;
   font-size: 15px;
   letter-spacing: 2px;

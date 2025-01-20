@@ -5,7 +5,6 @@ import {
   IMonthlyBudget,
   ISales,
 } from "../interfaces/interface";
-import { useKijunbiContext } from "../contexts/KijunbiContextProvider";
 
 type dispDataType = {
   monthlydata?: IMonthlyActual[];
@@ -27,10 +26,10 @@ const dispMixBarChardDataNum = 4;
 const useSales = (
   data: ISales[],
   budget: IMonthlyBudget[],
-  dispBussinessSpan: number
+  dispBussinessSpan: number,
+  kijunbi: string
 ) => {
   const [dispData, setDispData] = useState<dispDataType>({});
-  const { kijunbi } = useKijunbiContext();
 
   useEffect(() => {
     const newDispData: dispDataType = {};

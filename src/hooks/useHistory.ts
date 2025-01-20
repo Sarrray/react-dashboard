@@ -56,16 +56,17 @@ const useHistory = () => {
       date: `${kijunbi.substring(0, 4)}/${kijunbi.substring(4, 6)}`,
       product: "all",
     });
-  }, []);
+  }, [kijunbi]);
 
   useEffect(() => {
     let h = history;
     iterateTypedObject(filters, (key, value) => {
-      if (value == "all") {
-      } else if (key == "date") {
-        h = h.filter((x) => x[key].toString().substring(0, 7) == value);
-      } else {
-        h = h.filter((x) => x[key] == value);
+      if (value != "all") {
+        if (key == "date") {
+          h = h.filter((x) => x[key].toString().substring(0, 7) == value);
+        } else {
+          h = h.filter((x) => x[key] == value);
+        }
       }
     });
     if (h.length > 0) {
@@ -77,7 +78,7 @@ const useHistory = () => {
       });
     }
     setFilteredHistory(h);
-  }, [filters]);
+  }, [filters, history]);
 
   return {
     history,

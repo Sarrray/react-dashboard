@@ -14,8 +14,13 @@ import CustomTooltip from "./CustomTooltip";
 type GraphMixBarChartProps = {
   data: Record<string, string | number>[];
   color: Record<string, string>;
+  hiddenTooltip?: boolean;
 };
-const GraphMixBarChart = ({ data, color }: GraphMixBarChartProps) => {
+const GraphMixBarChart = ({
+  data,
+  color,
+  hiddenTooltip = false,
+}: GraphMixBarChartProps) => {
   const product1: string[] = [];
   data.forEach((x) => product1.push(...Object.keys(x)));
   const product2 = [...new Set(product1)];
@@ -46,7 +51,9 @@ const GraphMixBarChart = ({ data, color }: GraphMixBarChartProps) => {
             stroke="black"
           />
           <YAxis stroke="black" />
-          <Tooltip content={<CustomTooltip />} />
+          {!hiddenTooltip && (
+            <Tooltip content={<CustomTooltip labelformat="yyyy年MM月dd日" />} />
+          )}
           <Legend content={<CustomeLegend />} />
           {products
             .sort((a, b) => {
