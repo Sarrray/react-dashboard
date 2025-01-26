@@ -4,7 +4,7 @@ import { reducer } from "../../reducer/registerReducer";
 import RegisterRow from "./RegisterRow";
 
 import * as S from "./Style";
-import GraphPieChart2 from "../../graph/GraphPieChart2";
+import GraphPieChart2 from "../graph/GraphPieChart2";
 
 const InitTestData: IProductInfo[] = [
   { no: 1, date: "2025/1/10", product: "いちご", price: 200 },

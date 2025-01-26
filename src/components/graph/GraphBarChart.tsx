@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import CustomeLegend from "./CustomeLegend";
 import CustomTooltip from "./CustomTooltip";
-import { IBudgetActualData } from "../interfaces/interface";
+import { IBudgetActualData } from "../../interfaces/interface";
 
 type DataLabelType = Record<
   keyof IBudgetActualData,

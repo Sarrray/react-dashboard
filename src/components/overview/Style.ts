@@ -100,6 +100,9 @@ const divOverView = styled.div`
     grid-row: 1;
     align-self: center;
     font-weight: bold;
+    .annotation {
+      margin-top: 5px;
+    }
   }
 
   & > :nth-child(2) {
@@ -115,6 +118,11 @@ const divOverView = styled.div`
   }
 `;
 
+const SelectKijunbi = styled.select`
+  font-size: 1.2rem;
+  padding: 5px 20px 5px 5px;
+`;
+
 export {
   divCard,
   divSalesCard,
@@ -122,4 +130,5 @@ export {
   divUriageProductCardRow,
   buttonOutputPDF,
   divOverView,
+  SelectKijunbi,
 };

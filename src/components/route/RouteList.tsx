@@ -2,12 +2,12 @@ import { RiHome4Line } from "react-icons/ri";
 import { BiPurchaseTag } from "react-icons/bi";
 import * as S from "./Style";
 
-import Overview from "../overview/Overview";
 import History from "../history/History";
 import Register from "../register/Register";
 import { MdHistoryEdu } from "react-icons/md";
 import Report from "../report/Report";
 import { HiOutlineDocumentReport } from "react-icons/hi";
+import Overview from "../overview/Overview";
 
 type NavType = {
   key: string;

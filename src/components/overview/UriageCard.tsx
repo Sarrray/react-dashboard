@@ -1,11 +1,11 @@
 import { Label } from "recharts";
-import GraphPieChart from "../../graph/GraphPieChart";
 import * as S from "./Style";
+import GraphPieChart from "../graph/GraphPieChart";
 
 type UriageCardProps = GraphdataType &
   CardInfoType & { width: number; height: number };
-
-type GraphdataType = { data: { name: string; value: number }[] };
+// data: { name: string; value: number
+type GraphdataType = { value: number | null };
 export type CardInfoType = {
   cardinfo: {
     kbn: "day" | "month";
@@ -24,7 +24,7 @@ type UriagePieChartProps = GraphdataType & {
   colors: string[];
 };
 
-const UriageCard = ({ data, cardinfo }: UriageCardProps) => {
+const UriageCard = ({ value, cardinfo }: UriageCardProps) => {
   return (
     <>
       <S.divSalesCard>
@@ -37,7 +37,7 @@ const UriageCard = ({ data, cardinfo }: UriageCardProps) => {
         <div className="item3">{cardinfo.bottomlabel}</div>
         <div className="item4">
           <UriagePieChart
-            data={data}
+            value={value}
             insideTopLabel={cardinfo.insideTopLabel}
             insideBottomLabel={cardinfo.insideBottomLabel}
             colors={cardinfo.colors}
@@ -49,7 +49,7 @@ const UriageCard = ({ data, cardinfo }: UriageCardProps) => {
 };
 
 const UriagePieChart = ({
-  data,
+  value,
   insideTopLabel,
   insideBottomLabel,
   colors,
@@ -58,7 +58,13 @@ const UriagePieChart = ({
   return (
     <>
       <GraphPieChart
-        data={data}
+        data={[
+          { name: "hontai", value: value ?? 0 },
+          {
+            name: "sonota",
+            value: 100 - (value ?? 0),
+          },
+        ]}
         colors={colors}
         size={size}
         insideLabel={

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import * as htmlToImage from "html-to-image";
 import { usePDF } from "@react-pdf/renderer";
 import ReportPDF from "./ReportPDF";
-import GraphMixBarChart from "../../graph/GraphMixBarChart";
+import GraphMixBarChart from "../graph/GraphMixBarChart";
 
 import * as S from "./Style";
 import Suggestitem from "./Suggestitem";
@@ -11,9 +11,10 @@ import PDFItem from "./PDFItem";
 import budge from "../../data/budget.json";
 import salesdata from "../../data/fruitsales.json";
 import fruitbgcolor from "../../data/fruitbgcolor.json";
-import useSales from "../../hooks/useSales";
 import { useKijunbiContext } from "../../contexts/KijunbiContextProvider";
-import GraphPieChart2 from "../../graph/GraphPieChart2";
+import GraphPieChart2 from "../graph/GraphPieChart2";
+import useSalesSummary from "../../hooks/useSalesSummary";
+import KijunbiDDL from "../overview/KijunbiDDL";
 
 export type DraggableItemType = {
   id: number;
@@ -31,22 +32,23 @@ const Report = () => {
   const [pdfflg, setPdfflg] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
   const { kijunbi } = useKijunbiContext();
-  const [ddlKijunbi, setDdlKijunbi] = useState(kijunbi);
-  const { dispData } = useSales(
-    salesdata,
-    budge,
-    dispBussinessSpan,
-    ddlKijunbi
-  );
-  const list = salesdata
-    .map((x) => x.date)
-    .sort((a, b) => Number(b) - Number(a));
+  const {
+    salesSummary,
+    inputDate,
+    setInputDate,
+    handleDateChange,
+    targetDateList,
+  } = useSalesSummary(salesdata, budge);
 
   const handleOnClickAsync = async () => {
     const imgStr = await htmlToImage.toPng(divRef.current!);
     update(<ReportPDF str={imgStr} />);
     setPdfflg(true);
   };
+
+  useEffect(() => {
+    setInputDate(kijunbi);
+  }, [kijunbi, setInputDate]);
 
   useEffect(() => {
     if (pdfflg && pdf.url) {
@@ -104,7 +106,10 @@ const Report = () => {
             x: Math.max(0, newX),
             y: Math.max(0, newY),
           },
-          id: prevItems.reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
+          id:
+            prevItems
+              .concat(suggestitems)
+              .reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
           type: "pdf",
           width: newItem.width,
           height: newItem.height,
@@ -128,24 +133,18 @@ const Report = () => {
     if (graph == "GraphMixBarChart") {
       graphJSX = (
         <GraphMixBarChart
-          data={dispData.mixeddatabyproduct?.slice(0, dispBussinessSpan) || []}
+          data={
+            salesSummary.n日間の商品毎の売上高?.slice(0, dispBussinessSpan) ||
+            []
+          }
           color={fruitbgcolor}
           hiddenTooltip={true}
         />
       );
     } else if (graph == "GraphPieChart2") {
-      const kijunbidata = salesdata.filter((x) => x.date == ddlKijunbi)[0];
-      if (kijunbidata == undefined) {
-        graphJSX = <></>;
-      } else {
-        const graphdata = Object.entries(kijunbidata.sales)
-          .map((x) => ({
-            Name: x[0],
-            Value: x[1],
-          }))
-          .sort((a, b) => b.Value - a.Value);
-        graphJSX = <GraphPieChart2 data={graphdata}></GraphPieChart2>;
-      }
+      graphJSX = (
+        <GraphPieChart2 data={salesSummary.当日の商品の売上高}></GraphPieChart2>
+      );
     } else {
       return;
     }
@@ -153,7 +152,10 @@ const Report = () => {
     setSuggestItems((prev) => {
       return [
         {
-          id: prev.reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
+          id:
+            prev
+              .concat(addeditems)
+              .reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
           jsx: (
             <div
               style={{
@@ -246,16 +248,11 @@ const Report = () => {
                   <span>■追加アイテムエリアに追加</span>
                   <div>
                     対象日：
-                    <S.selectKijunbi
-                      value={ddlKijunbi}
-                      onChange={(e) => setDdlKijunbi(e.target.value)}
-                    >
-                      {list.map((x) => (
-                        <option key={x} value={x}>
-                          {x}
-                        </option>
-                      ))}
-                    </S.selectKijunbi>
+                    <KijunbiDDL
+                      targetDateList={targetDateList}
+                      value={inputDate}
+                      handleChange={handleDateChange}
+                    />
                   </div>
                   <S.buttonDefault
                     onClick={() => handleClickAddSuggest("GraphMixBarChart")}
@@ -274,7 +271,7 @@ const Report = () => {
                   <span className="caption">追加アイテム</span>
                   {suggestitems.map((x) => (
                     <Suggestitem
-                      key={x.id}
+                      key={`s${x.id}`}
                       item={x}
                       handleDragStart={handleDragStart}
                     />
@@ -290,7 +287,7 @@ const Report = () => {
         <div className="pdfarea" ref={divRef}>
           {addeditems.map((x) => (
             <PDFItem
-              key={x.id}
+              key={`a${x.id}`}
               item={x}
               completeFlg={completeFlg}
               handleDragStart={handleDragStart}

@@ -9,7 +9,6 @@ const Suggestitem = ({ item, handleDragStart }: SuggestitemsProps) => {
   return (
     <>
       <div
-        key={item.id}
         style={{
           top: item.position.x,
           left: item.position.y,
