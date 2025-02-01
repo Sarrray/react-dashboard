@@ -5,9 +5,7 @@ type GraphPieChart2Props = {
   Value: number | undefined;
 }[];
 
-// const margin = { top: 30, right: 30, bottom: 30, left: 30 };
 const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-// const COLORS = ["#ff5050", "#00468b", "#0071bc", "#ff8f86", "#00215d"];
 const COLORS = [
   "#30005d",
   "#a300b4",
@@ -111,10 +109,9 @@ const getContrastColor = (backgroundColor: string): string => {
   const g = parseInt(hex.slice(2, 4), 16);
   const b = parseInt(hex.slice(4, 6), 16);
 
-  // 明度の計算（簡易版）
+  // 明度の計算
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
 
-  // return brightness > 128 ? "#000000" : "#EEEEEE";
   return brightness > 150 ? "#000000" : "#EEEEEE";
 };
 

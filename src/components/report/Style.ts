@@ -60,6 +60,7 @@ const divSuggestTopArea = styled.div`
   display: grid;
   grid-template-columns: 300px 1fr;
   margin-top: 20px;
+  height: 250px;
 
   & > :nth-child(1) {
     margin-top: 10px;
@@ -68,10 +69,12 @@ const divSuggestTopArea = styled.div`
 
 const divSuggestitemsArea = styled.div`
   position: relative;
-  margin-top: 1em;
   padding: 1em 2em;
   border: 1px solid #000;
   display: inline-block;
+  width: 400px;
+  height: 100%;
+  box-sizing: border-box;
 
   & .caption {
     position: absolute;
@@ -150,6 +153,7 @@ const divSuggestAdd = styled.div`
   & > :nth-child(2) {
     grid-column: 1/3;
     grid-row: 2;
+    align-self: center;
   }
 
   & > :nth-child(3) {

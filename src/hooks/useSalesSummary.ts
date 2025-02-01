@@ -11,7 +11,7 @@ import {
   getTodayProductData,
   getTopProduct,
   getTotalSales,
-} from "../services/salesSummaryService";
+} from "../utils/salesSummaryUtils";
 import { IMonthlyBudget, ISales, ISalesJson } from "../interfaces/interface";
 
 export type TSummary =

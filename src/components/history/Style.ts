@@ -25,7 +25,6 @@ const baseTable = styled.table`
     padding: 7px;
 
     border-bottom: 1px solid ${LineColor};
-    /* border-right: 1px solid ${LineColor}; */
   }
 
   td:last-child {
@@ -67,8 +66,6 @@ const Table = styled(baseTable)`
     minmax(200px, 1fr)
     minmax(200px, 4.5fr)
     minmax(150px, 1.5fr);
-  // minmax(100px, 1fr)
-  // minmax(100px, 2fr);
 
   tr:nth-child(odd) td {
     background-color: #f4f5f6;

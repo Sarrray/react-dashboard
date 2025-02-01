@@ -48,8 +48,6 @@ const CustomTooltip = (props: any): JSX.Element => {
         position: "absolute",
         left: coordinate.x + 20,
         top: 0,
-        // top: coordinate.y,
-        // transform: "translate(-50%)",
         background: "#fff",
         border: "1px solid #aaa",
         width: "200px",
@@ -59,9 +57,6 @@ const CustomTooltip = (props: any): JSX.Element => {
       }}
     >
       <div>
-        {/* {`${label.slice(0, 4)}/${Number(label.slice(4, 6))}/${Number(
-          label.slice(6, 8)
-        )}`} */}
         {dataTitle}
         {payload.map((x, index) => (
           <div
@@ -80,10 +75,6 @@ const CustomTooltip = (props: any): JSX.Element => {
               {x.value.toLocaleString()}
               {displayname?.[x.name]?.unit ?? defaultUnit}
             </div>
-            {/* <p style={{ padding: 0, margin: 0 }}>
-                <span style={{ color: entry.color }}>■</span>
-                {entry.name}: {entry.value.toLocaleString()}円
-              </p> */}
           </div>
         ))}
       </div>

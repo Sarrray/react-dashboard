@@ -1,3 +1,4 @@
+import React from "react";
 import * as S from "./Style";
 
 export type KijunbiDDLProps = {

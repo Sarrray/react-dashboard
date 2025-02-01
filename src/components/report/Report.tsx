@@ -15,15 +15,7 @@ import { useKijunbiContext } from "../../contexts/KijunbiContextProvider";
 import GraphPieChart2 from "../graph/GraphPieChart2";
 import useSalesSummary from "../../hooks/useSalesSummary";
 import KijunbiDDL from "../overview/KijunbiDDL";
-
-export type DraggableItemType = {
-  id: number;
-  jsx: JSX.Element;
-  position: { x: number; y: number };
-  type: "suggest" | "pdf";
-  width: number;
-  height: number;
-};
+import useDragHandlers from "../../hooks/useDragHandlers";
 
 const dispBussinessSpan = 5;
 
@@ -39,6 +31,17 @@ const Report = () => {
     handleDateChange,
     targetDateList,
   } = useSalesSummary(salesdata, budge);
+  const {
+    suggestItems,
+    setSuggestItems,
+    addItems,
+    handleDragStart,
+    handleDragOver,
+    handleDrop,
+    removeAddItems,
+    NewResizeObserver,
+  } = useDragHandlers();
+  const [completeFlg, setCompleteflg] = useState(false);
 
   const handleOnClickAsync = async () => {
     const imgStr = await htmlToImage.toPng(divRef.current!);
@@ -58,77 +61,7 @@ const Report = () => {
     update(<></>);
   }, [pdf.url]);
 
-  const [addeditems, setAddedItems] = useState<DraggableItemType[]>([]);
-  const [suggestitems, setSuggestItems] = useState<DraggableItemType[]>([]);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [completeFlg, setCompleteflg] = useState(false);
-
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: number) => {
-    const element = e.currentTarget;
-    const rect = element.getBoundingClientRect();
-
-    // ドラッグ開始時の要素内でのマウス位置を記録（elementからの相対位置）
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-
-    e.dataTransfer.setData("text/plain", id.toString());
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const draggedId = Number(e.dataTransfer.getData("text/plain"));
-    const dropContainer = e.currentTarget.getBoundingClientRect();
-
-    // ドロップ位置を計算（ドラッグ開始時のオフセットを考慮）
-    const newX = e.clientX - dropContainer.left - dragOffset.x;
-    const newY = e.clientY - dropContainer.top - dragOffset.y;
-    setAddedItems((prevItems) => {
-      let newItem;
-      newItem = prevItems.filter((x) => x.id == draggedId)?.[0];
-      if (!newItem) {
-        newItem = suggestitems.filter((x) => x.id == draggedId)?.[0];
-      }
-
-      if (!newItem) {
-        return [...addeditems];
-      }
-      return [
-        ...addeditems.filter((x) => x.id != draggedId),
-        {
-          ...newItem,
-          position: {
-            x: Math.max(0, newX),
-            y: Math.max(0, newY),
-          },
-          id:
-            prevItems
-              .concat(suggestitems)
-              .reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
-          type: "pdf",
-          width: newItem.width,
-          height: newItem.height,
-        },
-      ];
-    });
-  };
-
-  const handleResize = (id: number, width: number, height: number) => {
-    setAddedItems((prevItems) => {
-      return prevItems.map((x) =>
-        x.id == id ? { ...x, width: width, height: height } : x
-      );
-    });
-  };
-
-  const handleClickAddSuggest = (
-    graph: "GraphMixBarChart" | "GraphPieChart2"
-  ) => {
+  const CreateGraph = (graph: "GraphMixBarChart" | "GraphPieChart2") => {
     let graphJSX;
     if (graph == "GraphMixBarChart") {
       graphJSX = (
@@ -154,7 +87,7 @@ const Report = () => {
         {
           id:
             prev
-              .concat(addeditems)
+              .concat(addItems)
               .reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
           jsx: (
             <div
@@ -176,41 +109,6 @@ const Report = () => {
       ];
     });
   };
-
-  useEffect(() => {
-    setSuggestItems(() => {
-      const mixbarchartdata = {
-        data: [{ date: "20240101", りんご: 100, いちご: 200 }],
-        color: { りんご: "#ff0000", いちご: "#0000ff" },
-      };
-
-      return [
-        {
-          id: 1,
-          jsx: (
-            <div
-              style={{
-                width: 300,
-                height: 200,
-              }}
-              contentEditable={true}
-              suppressContentEditableWarning={true}
-            >
-              <GraphMixBarChart
-                data={mixbarchartdata.data}
-                color={mixbarchartdata.color}
-                hiddenTooltip={true}
-              />
-            </div>
-          ),
-          position: { x: 0, y: 0 },
-          type: "suggest",
-          width: 300,
-          height: 200,
-        },
-      ];
-    });
-  }, []);
 
   return (
     <>
@@ -246,7 +144,7 @@ const Report = () => {
               <div>
                 <S.divSuggestAdd>
                   <span>■追加アイテムエリアに追加</span>
-                  <div>
+                  <div className="taishobi">
                     対象日：
                     <KijunbiDDL
                       targetDateList={targetDateList}
@@ -255,12 +153,12 @@ const Report = () => {
                     />
                   </div>
                   <S.buttonDefault
-                    onClick={() => handleClickAddSuggest("GraphMixBarChart")}
+                    onClick={() => CreateGraph("GraphMixBarChart")}
                   >
                     直近5営業日の商品別売上
                   </S.buttonDefault>
                   <S.buttonDefault
-                    onClick={() => handleClickAddSuggest("GraphPieChart2")}
+                    onClick={() => CreateGraph("GraphPieChart2")}
                   >
                     商品別の売上割合
                   </S.buttonDefault>
@@ -269,7 +167,7 @@ const Report = () => {
               <div>
                 <S.divSuggestitemsArea>
                   <span className="caption">追加アイテム</span>
-                  {suggestitems.map((x) => (
+                  {suggestItems.map((x) => (
                     <Suggestitem
                       key={`s${x.id}`}
                       item={x}
@@ -285,21 +183,19 @@ const Report = () => {
       <S.divPDFitemsArea onDragOver={handleDragOver} onDrop={handleDrop}>
         <span className="caption">PDF出力対象</span>
         <div className="pdfarea" ref={divRef}>
-          {addeditems.map((x) => (
+          {addItems.map((x) => (
             <PDFItem
               key={`a${x.id}`}
               item={x}
               completeFlg={completeFlg}
               handleDragStart={handleDragStart}
-              handleResize={handleResize}
+              NewResizeObserver={NewResizeObserver}
             />
           ))}
         </div>
       </S.divPDFitemsArea>
       <div>
-        <S.buttonDefault onClick={() => setAddedItems([])}>
-          グラフ削除
-        </S.buttonDefault>
+        <S.buttonDefault onClick={removeAddItems}>グラフ削除</S.buttonDefault>
       </div>
       <div style={{ marginTop: 20, marginBottom: 20 }}>
         <h4 style={{ margin: 0 }}>実装予定</h4>

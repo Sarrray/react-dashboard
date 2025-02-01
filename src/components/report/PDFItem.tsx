@@ -1,28 +1,23 @@
 import React, { useEffect, useRef } from "react";
-import { DraggableItemType } from "./Report";
+import { TDraggableItem } from "../../hooks/useDragHandlers";
 
 type PDFItemProps = {
-  item: DraggableItemType;
+  item: TDraggableItem;
   completeFlg: boolean;
-  handleDragStart: (e: React.DragEvent<HTMLDivElement>, id: number) => void;
-  handleResize: (id: number, width: number, height: number) => void;
+  handleDragStart: (event: React.DragEvent<HTMLElement>) => void;
+  NewResizeObserver: ResizeObserver;
 };
 
 const PDFItem = ({
   item,
   completeFlg,
   handleDragStart,
-  handleResize,
+  NewResizeObserver,
 }: PDFItemProps) => {
   const divRef = useRef(null);
 
   useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        handleResize(item.id, width, height);
-      }
-    });
+    const resizeObserver = NewResizeObserver;
 
     if (divRef.current) {
       resizeObserver.observe(divRef.current);
@@ -31,7 +26,7 @@ const PDFItem = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [NewResizeObserver]);
 
   return (
     <>
@@ -43,6 +38,7 @@ const PDFItem = ({
         }}
       >
         {React.cloneElement(item.jsx, {
+          id: item.id,
           style: {
             ...item.jsx.props.style,
             resize: completeFlg ? "none" : "both",
@@ -52,7 +48,7 @@ const PDFItem = ({
           },
           draggable: completeFlg ? "false" : "true",
           onDragStart: (e: React.DragEvent<HTMLDivElement>) =>
-            handleDragStart(e, item.id),
+            handleDragStart(e),
           ref: divRef,
         })}
       </div>
