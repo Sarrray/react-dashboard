@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDragContext } from "../contexts/DragContextProvider";
 import { getDragStartPos, getDropPos } from "../utils/dragUtils";
 
 export type TDragOffset = { x: number; y: number };
@@ -14,14 +13,12 @@ export type TDraggableItem = {
 };
 
 const useDragHandlers = () => {
-  const { isDragging, setIsDragging } = useDragContext();
   const [dragOffset, setDragOffset] = useState<TDragOffset>({ x: 0, y: 0 });
   const [suggestItems, setSuggestItems] = useState<TDraggableItem[]>([]);
   const [addItems, setAddItems] = useState<TDraggableItem[]>([]);
 
   const handleDragStart = (event: React.DragEvent<HTMLElement>) => {
     const target = event.currentTarget;
-    setIsDragging(true);
     const startPos = getDragStartPos(target, event.clientX, event.clientY);
     setDragOffset(startPos);
     console.log(`[handleDragStart]`, startPos, dragOffset);
@@ -88,7 +85,6 @@ const useDragHandlers = () => {
   };
 
   return {
-    isDragging,
     suggestItems,
     setSuggestItems,
     addItems,

@@ -8,7 +8,6 @@ import { MdHistoryEdu } from "react-icons/md";
 import Report from "../report/Report";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import Overview from "../overview/Overview";
-import DragProvider from "../../contexts/DragProvider";
 
 type NavType = {
   key: string;
@@ -34,11 +33,7 @@ export const NavLists: NavType[] = [
     key: "report",
     title: "レポート作成",
     url: "/report",
-    element: (
-      <DragProvider>
-        <Report />
-      </DragProvider>
-    ),
+    element: <Report />,
     icon: <HiOutlineDocumentReport {...S.NavIconAttr} />,
     sort: 2,
   },
